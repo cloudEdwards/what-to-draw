@@ -8,8 +8,11 @@ ini_set('display_errors',1);  error_reporting(E_ALL);
 require_once('textrazor/TextRazor.php');
 
 require_once('twitter-api-php/TwitterAPIExchange.php');
-
+include('random_text.php');
 require('wordnik-php/wordnik/Swagger.php');
+
+
+
 $myAPIKey = 'YOUR KEY GOES HERE';
 $client = new APIClient($myAPIKey, 'http://api.wordnik.com/v4');
 
@@ -97,10 +100,6 @@ if ( $PRODUCTION ) {
             foreach ($sentence['words'] as $word)  {
 
                 $parts_of_speech[$word['partOfSpeech']][]= $word['token'];
-
-                // if ( strpos($word['partOfSpeech'], 'NN') !== false ) $parts_of_speech['nouns'][]= $word['token'];
-                // if ( strpos($word['partOfSpeech'],'RB') !== false ) $parts_of_speech['adverbs'][]= $word['token'];
-                // if ( strpos($word['partOfSpeech'], 'VB') !== false ) $parts_of_speech['verbs'][]= $word['token'];
             }
         }
     }
@@ -108,7 +107,7 @@ if ( $PRODUCTION ) {
 
 } else {
 
-    include('text_array.php');
+    include_once('text_array.php');
     $parts_of_speech = $parsed_text_array;
 
 
@@ -123,20 +122,26 @@ if ( $PRODUCTION ) {
     } 
 }
 
-$counter = 10;
-while ($counter > 0){
+
+include_once('random_text.php');
+
+var_dump($random_text_array);
+exit;
+// $counter = 10;
+// while ($counter > 0){
+//     get_sentence($parts_of_speech_clean);
+//     $counter --;
+// }
+
     get_sentence($parts_of_speech_clean);
-    $counter --;
-}
-
-
 
 
 
 function get_sentence($parts_of_speech_clean)
-{
-    $nounA = get_word("NN", $parts_of_speech_clean);
-    $nounB = get_word("NN", $parts_of_speech_clean);
+{    
+
+    $nounA = get_word("NN", $random_text_array);
+    $nounB = get_word("NN", $random_text_array);
     $verb = get_word("VBG", $parts_of_speech_clean);
     $adjective = get_word("JJ", $parts_of_speech_clean);
     $prep = get_word("IN", $parts_of_speech_clean);
